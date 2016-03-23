@@ -1,0 +1,21 @@
+version: '2'
+services:
+    inventory-app:
+        image: inventory
+        external_links:
+            - inventory-mysql:mysql
+            - inventory-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/inventory?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    inventory-mysql:
+        extends:
+            file: mysql.yml
+            service: inventory-mysql
+    inventory-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: inventory-elasticsearch
